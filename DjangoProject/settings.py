@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-*j9!^4sw#ec%56n$j_bjfb4w_(!mgb@92ss4s5@caweib^j^tv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -117,7 +117,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 AWS_ACCESS_KEY_ID = os.getenv('ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = os.getenv('SECRET_KEY')
 AWS_BUCKET_NAME = os.getenv('BUCKET_NAME')

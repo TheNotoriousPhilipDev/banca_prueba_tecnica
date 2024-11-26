@@ -7,12 +7,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from .models import Registro
 
-# Configurar cliente S3
+# Configuramos cliente S3
 s3 = boto3.client('s3', region_name='us-east-1',
                   aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                   aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
 
-# Cargar el modelo preentrenado
+# Se carga el modelo preentrenado (quemado en el código)
 model = joblib.load('iris_model.joblib')
 
 
@@ -112,8 +112,8 @@ def ver_prediccion(request, registro_id):
 
         required_columns = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
         if set(required_columns).issubset(df.columns):
-            X = df[required_columns]
-            predictions = model.predict(X)
+            x = df[required_columns]
+            predictions = model.predict(x)
 
             # Agregar la columna de predicciones
             df['Prediction'] = predictions
