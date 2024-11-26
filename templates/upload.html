@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Archivo Excel</title>
+</head>
+<body>
+    <h1>Cargar Archivo Excel para Predicción</h1>
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="excel_file">Seleccionar archivo Excel:</label>
+        <input type="file" name="excel_file" accept=".xlsx, .xls" required>
+        <button type="submit">Subir y Predecir</button>
+    </form>
+
+    <h2>Registros Subidos:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre del Archivo</th>
+                <th>URL del Archivo</th>
+                <th>Tamaño (KB)</th>
+                <th>Fecha de Subida</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+                <tr>
+                    <td>{{ registro.nombre_archivo }}</td>
+                    <td><a href="{{ registro.url_archivo }}" target="_blank">{{ registro.url_archivo }}</a></td>
+                    <td>{{ registro.peso_archivo }}</td>
+                    <td>{{ registro.fecha_subida|date:"d-m-Y H:i" }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'eliminar_registro' registro.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color: red; color: white;">Eliminar</button>
+                        </form>
+                        <form method="GET" action="{% url 'ver_prediccion' registro.id %}">
+                            <button type="submit" style="background-color: green; color: white;">Ver Predicción</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No hay registros</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

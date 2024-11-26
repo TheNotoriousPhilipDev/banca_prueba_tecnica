@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Predicción</title>
+</head>
+<body>
+    <h1>Predicciones del Modelo</h1>
+
+    <h2>Resultados:</h2>
+    <div>
+        {{ table|safe }}
+    </div>
+
+    <a href="/" style="display: inline-block; margin-top: 20px;">
+        <button style="padding: 10px 20px;">Cargar Otro Archivo</button>
+    </a>
+
+    <h2>Registros Subidos:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre del Archivo</th>
+                <th>URL del Archivo</th>
+                <th>Tamaño (KB)</th>
+                <th>Fecha de Subida</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+                <tr>
+                    <td>{{ registro.nombre_archivo }}</td>
+                    <td><a href="{{ registro.url_archivo }}" target="_blank">{{ registro.url_archivo }}</a></td>
+                    <td>{{ registro.peso_archivo }}</td>
+                    <td>{{ registro.fecha_subida }}</td>
+                    <td>
+                        <form method="POST" action="/eliminar/{{ registro.id }}/">
+                            {% csrf_token %}
+                            <button type="submit" style="color: red;">Eliminar</button>
+                        </form>
+                        <form method="GET" action="/ver_prediccion/{{ registro.id }}/">
+                            <button type="submit" style="color: blue;">Ver Predicción</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No hay registros</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
